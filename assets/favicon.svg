@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="P">
+  <rect x="3" y="3" width="58" height="58" rx="11"
+        fill="#1f1f1f" stroke="#8a8a8a" stroke-width="4"/>
+  <text x="32" y="44" text-anchor="middle"
+        font-family="Segoe UI, system-ui, sans-serif"
+        font-size="34" font-weight="700" fill="#ffffff">P</text>
+</svg>

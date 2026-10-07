@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command Manager · 路人甲_PasserbyA</title>
+<meta name="description" content="Command Manager —— 用 JavaFX 写的命令行管理与插件化运行工具。插件由 manifest.json 声明，界面按参数类型动态渲染表单，底层挂常驻 shell 会话。">
+<meta name="theme-color" content="#0f0f0f">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-text">路人甲_PasserbyA</span>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="https://github.com/Lurenjia-PasserbyA/command-manager" target="_blank" rel="noopener">仓库</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-head wrap">
+    <a class="back" href="../index.html">← 返回首页</a>
+    <h1>Command Manager</h1>
+    <p class="lede">一个用 JavaFX 写的命令行管理与插件化运行工具 —— 把常用命令变成带图形参数面板的条目，底层挂一个常驻 shell 会话。</p>
+    <div class="meta-row">
+      <span><b>语言</b>Java 21</span>
+      <span><b>界面</b>JavaFX 21</span>
+      <span><b>构建</b>Gradle</span>
+      <span><b>分发</b>单文件 jar（约 11 MB）</span>
+      <span><b>许可</b>GNU General Public License v3.0</span>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/Lurenjia-PasserbyA/command-manager/releases" target="_blank" rel="noopener">下载最新版</a>
+      <a class="btn" href="https://github.com/Lurenjia-PasserbyA/command-manager" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2>它解决什么</h2>
+    <div class="prose">
+      <p>命令行很强，但参数难记、手册要翻、同一串命令得反复敲。Command Manager 把这些收敛成「条目」：每个条目就是一个插件，用一份 <code>manifest.json</code> 声明它需要哪些参数（文本 / 数字 / 下拉 / 文件 / 开关），运行时按声明<strong>动态渲染出表单</strong>，点执行就把拼好的命令送进底下的 shell。</p>
+      <p>既保留手敲命令的自由，又不用再记参数 —— 这是它和普通终端模拟器的区别。</p>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2>核心特性</h2>
+    <div class="feature-grid">
+
+      <div class="feature">
+        <h3>插件化架构</h3>
+        <p>一份 <code>manifest.json</code> 就是一个插件，丢进 <code>cmmgr/plugins/</code> 即可被扫描到。声明 id、名称、可执行文件和参数列表，不用改一行程序代码。</p>
+      </div>
+
+      <div class="feature">
+        <h3>参数面板自动生成</h3>
+        <p>支持 text / number / select / file / checkbox / flag 六种控件，按类型渲染对应输入组件。必填项留空会在执行前被拦下并列出缺哪个，而不是静默传个空值。</p>
+      </div>
+
+      <div class="feature">
+        <h3>常驻 shell 会话</h3>
+        <p>不是 <code>cmd /c</code> 那种跑完就退。命令写进 shell 的 stdin、输出从 stdout 读回，<code>cd</code> 和环境变量跨命令保留。</p>
+      </div>
+
+      <div class="feature">
+        <h3>单文件分发</h3>
+        <p><code>./gradlew fatJar</code> 打出约 11 MB 的可执行 jar，JavaFX 原生库和 Jackson 一并打进去，<code>java -jar</code> 直接能跑，不需要配 <code>--module-path</code>。</p>
+      </div>
+
+      <div class="feature">
+        <h3>编码自适应</h3>
+        <p>PowerShell 7 走 UTF-8、Windows PowerShell 5.1 走 GBK。默认 shell 是 pwsh 7 时自动选 UTF-8；编码和 shell 对不上会明确提醒，而不是让你对着乱码猜。</p>
+      </div>
+
+      <div class="feature">
+        <h3>配置持久化与迁移</h3>
+        <p>设置存在 <code>cmmgr/config/config.json</code>，损坏或缺失时用默认值启动。旧布局（<code>plugins/</code> 与 <code>.command-manager/</code>）在启动时自动搬迁，逐个文件移动、失败不丢数据。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2>插件长什么样</h2>
+    <p class="lede">以自带的 ffmpeg 转码插件为例，整份声明如下：</p>
+    <pre class="codeblock"><code>{
+  "id": "ffmpeg.transcode",
+  "version": "0.1.0",
+  "name": "FFmpeg 转码",
+  "description": "用 ffmpeg 把视频转码 / 缩放。",
+  "type": "shell",
+  "executable": "powershell.exe -ExecutionPolicy Bypass -NoProfile -File \"cmmgr/plugins/ffmpeg/run.ps1\"",
+  "isExecutable": true,
+  "parameters": [
+    { "name": "input",      "label": "输入文件", "type": "file",   "required": true },
+    { "name": "output",     "label": "输出文件", "type": "text",   "required": true },
+    { "name": "resolution", "label": "分辨率",   "type": "select", "required": false,
+      "options": ["original", "1920:-1", "1280:-1", "854:-1", "640:-1"] },
+    { "name": "quality",    "label": "画质",     "type": "select", "required": false,
+      "options": ["high", "medium", "low", "tiny"] }
+  ]
+}</code></pre>
+    <p class="lede">程序按 <code>parameters</code> 渲染出表单，执行时拼成命令行写进 shell。含空格的值会自动加引号。</p>
+  </section>
+
+  <section class="wrap section">
+    <h2>界面结构</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>主页</h3>
+        <p>快捷入口。</p>
+      </div>
+      <div class="feature">
+        <h3>终端</h3>
+        <p>左侧插件列表、右侧参数面板、底部输出区与命令输入框。插件执行和手敲命令走同一条 shell。</p>
+      </div>
+      <div class="feature">
+        <h3>插件</h3>
+        <p>已加载插件列表，可移除条目、打开插件目录。</p>
+      </div>
+      <div class="feature">
+        <h3>设置</h3>
+        <p>shell 路径与启动参数、工作目录、输出编码、终端字号、回滚行数上限。</p>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:16px">页面切换带方向动画：每个页面有一个数字 id，比较 id 大小决定滑入方向，缓动为 ease-out。</p>
+  </section>
+
+  <section class="wrap section">
+    <h2>项目结构</h2>
+    <pre class="codeblock"><code>command-manager/
+├── build.gradle.kts              构建 + Shadow fat jar
+├── cmmgr/                        运行期数据
+│   ├── config/config.json        设置
+│   └── plugins/ffmpeg/           插件（含 run.ps1 包装脚本）
+└── src/
+    ├── main/java/org/passerbya/
+    │   ├── Main.java             入口
+    │   ├── core/                 CommandManager · PluginManager · AppSettings · AppPaths
+    │   ├── tools/                manifest 数据模型与加载器
+    │   ├── debug/                DebugLogger
+    │   └── ui/                   MainGUI · PageId · pages/ · components/
+    └── test/java/                31 个单元测试</code></pre>
+  </section>
+
+  <section class="wrap section">
+    <h2>几个踩过的坑</h2>
+    <div class="feature-grid">
+
+      <div class="feature">
+        <h3>JavaFX 的 CSS 变量会静默失效</h3>
+        <p>把 CSS 变量赋给 <code>-fx-border-radius</code> 时，JavaFX 会先把值转成 <code>Double</code> 再强转 <code>Size</code>，抛 <code>ClassCastException</code> —— 圆角悄悄不生效，只刷一屏警告。最后改成写字面值。</p>
+      </div>
+
+      <div class="feature">
+        <h3>同一仓库里 BOM 规则是相反的</h3>
+        <p>Java 源文件带 BOM 会直接编译失败（<code>非法字符: '\ufeff'</code>）；而 PowerShell 5.1 读<strong>无</strong> BOM 的 <code>.ps1</code> 会按 GBK 解码，把中文读乱、连带破坏语法解析。所以 <code>.java</code> 一律无 BOM，<code>.ps1</code> 一律有。</p>
+      </div>
+
+      <div class="feature">
+        <h3>命令拼装模型没法在值前面插 flag</h3>
+        <p>拼装方式是「executable + 按顺序的值」。像 ffmpeg 这种需要 <code>-i</code> / <code>-vf</code> / <code>-crf</code> 交错参数的，得套一层包装脚本，把 flag 编排收进脚本里，manifest 只声明「值」。</p>
+      </div>
+
+      <div class="feature">
+        <h3>fat jar 里的 JavaFX 能直接跑</h3>
+        <p>原生库（<code>glass.dll</code>、<code>prism_d3d.dll</code> 等）本就在 <code>javafx-graphics-*-win.jar</code> 内部，运行时 JavaFX 自己解压到临时目录再加载。所以 fat jar 不需要额外处理原生库。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2>截图</h2>
+    <div class="shot-grid">
+      <div class="shot">终端页 —— 左侧插件列表，右侧参数面板</div>
+      <div class="shot">设置页 —— shell 路径与编码</div>
+      <div class="shot">插件执行输出</div>
+    </div>
+    <p class="lede" style="margin-top:14px">（截图待补 —— 把图片放进 <code>assets/</code> 后替换上面三个占位块即可。）</p>
+  </section>
+
+  <section class="wrap section">
+    <h2>构建与运行</h2>
+    <ol class="steps">
+      <li>准备 <b>JDK 21</b></li>
+      <li>克隆仓库并进入目录</li>
+      <li>运行下面任意一条命令</li>
+    </ol>
+    <pre class="codeblock" style="margin-top:16px"><code>./gradlew run       # 直接运行
+./gradlew test      # 单元测试（31 个）
+./gradlew fatJar    # 打包成单文件可执行 jar
+
+java -jar build/libs/command-manager-1.0-SNAPSHOT-all.jar</code></pre>
+    <p class="lede">程序的工作目录就是启动时的当前目录，运行期数据都收在它下面的 <code>cmmgr/</code> 里。</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>© <span id="year">2026</span> 路人甲_PasserbyA</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

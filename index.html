@@ -1,13 +1,159 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <title>路人甲_PasserbyA的站点</title>
-        <link rel="./images/icon.png" href="./images/icon.png" />
-    </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>路人甲_PasserbyA的website</title>
+<meta name="description" content="路人甲_PasserbyA的个人站点写 Java 和 Rust，做过命令行管理器和 GPU 加速 GUI 库。">
+<meta name="theme-color" content="#0f0f0f">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
 
-    <body>
-        <h1>路人甲_PasserbyA的站点</h1>
-        <p>欢迎来到我的站点！</p>
-    </body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">P</span>
+      <span class="brand-text">路人甲_PasserbyA</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#about">关于</a>
+      <a href="#projects">项目</a>
+      <a href="#stack">技术栈</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <p class="eyebrow">GitHub的入</p>
+    <h1>Lurenjia_PasserbyA</h1>
+    <p class="lede">
+      写 <strong>Java</strong> 和 <strong>Rust</strong>，喜欢把想法做成真正能跑起来的东西 ——
+      从一个命令行管理器，到一个 GPU 加速的 GUI 库。
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/Lurenjia-PasserbyA" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="#projects">看看项目</a>
+    </div>
+  </section>
+
+  <section id="about" class="wrap section">
+    <h2>关于我</h2>
+    <div class="cols">
+      <div class="prose">
+        <p>我是<strong>Lurenjia_PasserbyA</strong>，一名热爱编程的初二学生。</p>
+      </div>
+      <dl class="facts">
+        <div><dt>年级</dt><dd>初二（2025 级）</dd></div>
+        <div><dt>方向</dt><dd>桌面应用 · 系统编程 · 图形渲染</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="projects" class="wrap section">
+    <h2>项目</h2>
+    <div class="grid">
+
+      <article class="card card-featured">
+        <div class="card-head">
+          <h3>command-manager</h3>
+        </div>
+        <p>JavaFX 写的命令行管理与插件化运行工具。深色主题四页导航；插件用 <code>manifest.json</code> 声明参数，界面按类型动态渲染表单；底层挂一个常驻 shell 会话，命令与输出双向流转。可打包成单个约 11 MB 的可执行 jar。</p>
+        <ul class="chips">
+          <li>Java</li><li>JavaFX</li><li>Gradle</li><li>Jackson</li>
+        </ul>
+        <div class="card-actions">
+          <a class="card-link" href="projects/command-manager.html">项目详情 →</a>
+          <a class="card-link" href="https://github.com/Lurenjia-PasserbyA/command-manager/releases" target="_blank" rel="noopener">下载 →</a>
+          <a class="card-link" href="https://github.com/Lurenjia-PasserbyA/command-manager" target="_blank" rel="noopener">仓库 →</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>advgui</h3>
+          <span class="tag">进行中</span>
+        </div>
+        <p>基于 <strong>wgpu</strong> 的 Rust GPU 加速 GUI 库，窗口与事件层用 <strong>winit</strong>。目前在建依赖骨架与最小示例，打算从渲染管线往上搭。</p>
+        <ul class="chips">
+          <li>Rust</li><li>wgpu</li><li>winit</li>
+        </ul>
+        <a class="card-link" href="https://github.com/Lurenjia-PasserbyA/advgui" target="_blank" rel="noopener">查看仓库 →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>k-shift-kernel</h3>
+          <span class="tag">实验</span>
+        </div>
+        <p><code>no_std</code> 裸机内核实验，编译目标是 <code>x86_64-unknown-none</code>，用 <code>bootloader_api</code> 拿到 framebuffer，直接往显存写像素。目前停在最小可引导状态。</p>
+        <ul class="chips">
+          <li>Rust</li><li>no_std</li><li>bootloader</li>
+        </ul>
+        <a class="card-link" href="https://github.com/Lurenjia-PasserbyA/k-shift-kernel" target="_blank" rel="noopener">查看仓库 →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h3>k-shift-launcher</h3>
+          <span class="tag">早期</span>
+        </div>
+        <p>基于 <strong>egui</strong> 的启动器，还在骨架阶段。</p>
+        <ul class="chips">
+          <li>Rust</li><li>egui</li>
+        </ul>
+        <a class="card-link" href="https://github.com/Lurenjia-PasserbyA/k-shift-launcher" target="_blank" rel="noopener">查看仓库 →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="stack" class="wrap section">
+    <h2>技术栈</h2>
+    <div class="grid grid-tight">
+      <div class="stack-card">
+        <h4>语言</h4>
+        <ul class="chips"><li>Java</li><li>Rust</li><li>HTML / CSS</li></ul>
+      </div>
+      <div class="stack-card">
+        <h4>框架与库</h4>
+        <ul class="chips"><li>JavaFX</li><li>Jackson</li><li>wgpu</li><li>winit</li><li>egui</li></ul>
+      </div>
+      <div class="stack-card">
+        <h4>工具</h4>
+        <ul class="chips"><li>Git</li><li>Gradle</li><li>Cargo</li><li>IntelliJ IDEA</li><li>VS Code</li><li>QEMU</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="wrap section">
+    <h2>联系</h2>
+    <ul class="contact-list">
+      <li>
+        <span class="contact-key">GitHub</span>
+        <a href="https://github.com/Lurenjia-PasserbyA" target="_blank" rel="noopener">github.com/Lurenjia-PasserbyA</a>
+      </li>
+      <li>
+        <span class="contact-key">邮箱</span>
+        <a href="mailto:3509057421@qq.com">3509057421@qq.com</a>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>© <span id="year">2026</span> 路人甲_PasserbyA</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
 </html>
